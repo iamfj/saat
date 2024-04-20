@@ -1,0 +1,46 @@
+{
+  "name": "@saat/core",
+  "version": "0.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.cts",
+      "import": "./dist/index.cjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.cts",
+  "typings": "./dist/index.d.cts",
+  "bin": {
+    "saat": "./dist/cli.cjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "preinstall": "npx only-allow pnpm",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "tsup --watch"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "commander": "^12.0.0",
+    "yaml": "^2.4.1"
+  },
+  "devDependencies": {
+    "@prisma/client": "^5.12.1",
+    "@vercel/style-guide": "^6.0.0",
+    "eslint": "^8.57.0",
+    "prisma": "^5.12.1",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  },
+  "peerDependencies": {
+    "@prisma/client": ">=4 || >=5"
+  }
+}

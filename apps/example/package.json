@@ -1,0 +1,31 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "prisma db push",
+    "lint": "eslint . --max-warnings 0",
+    "seed": "saat",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@prisma/client": "5.12.1",
+    "@saat/core": "workspace:*",
+    "next": "^14.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.56.5",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
+    "@vercel/style-guide": "^6.0.0",
+    "eslint": "^8.57.0",
+    "prisma": "^5.12.1",
+    "typescript": "^5.3.3"
+  }
+}

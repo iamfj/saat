@@ -1,0 +1,40 @@
+{
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
+  "name": "Node.js & TypeScript",
+  "image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:20-bookworm",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "postCreateCommand": "pnpm config set store-dir /home/node/.local/share/pnpm/store && pnpm add -g pnpm && pnpm i",
+  "postAttachCommand": "git config --global diff.ool ...",
+  "remoteUser": "node",
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/workspaces/${localWorkspaceFolderBasename}/node_modules/.bin:/home/node/.local/share/pnpm/bin:/home/node/.local/share/pnpm",
+    "PNPM_HOME": "/home/node/.local/share/pnpm",
+    "NVM_DIR": "/usr/local/share/nvm"
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind,consistency=cached"
+  ],
+  "features": {
+    "ghcr.io/warrenbuckley/codespace-features/sqlite:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "mikestead.dotenv",
+        "dbaeumer.vscode-eslint",
+        "oderwat.indent-rainbow",
+        "esbenp.prettier-vscode",
+        "Prisma.prisma",
+        "bradlc.vscode-tailwindcss",
+        "redhat.vscode-yaml",
+        "eamodio.gitlens",
+        "github.vscode-github-actions",
+        "EditorConfig.EditorConfig",
+        "bradlc.vscode-tailwindcss",
+        "csstools.postcss",
+        "yoavbls.pretty-ts-errors",
+        "cweijan.vscode-database-client2"
+      ]
+    }
+  }
+}

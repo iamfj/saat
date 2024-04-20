@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  name      String?
+  posts     Post[]
+  comments  Comment[]
+  followers Follow[]  @relation("userFollowers")
+  following Follow[]  @relation("userFollowing")
+  profile   Profile?
+}
+
+model Profile {
+  id      Int    @id @default(autoincrement())
+  bio     String
+  userId  Int    @unique
+  user    User   @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id          Int       @id @default(autoincrement())
+  title       String
+  content     String?
+  published   Boolean   @default(false)
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    Int
+  comments    Comment[]
+  categories  Category[] @relation("PostCategories")
+}
+
+model Comment {
+  id       Int    @id @default(autoincrement())
+  text     String
+  postId   Int
+  post     Post    @relation(fields: [postId], references: [id])
+  author   User    @relation(fields: [authorId], references: [id])
+  authorId Int
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
+  posts Post[] @relation("PostCategories")
+}
+
+model Follow {
+  id         Int    @id @default(autoincrement())
+  followerId Int
+  followingId Int
+  follower   User   @relation("userFollowers", fields: [followerId], references: [id])
+  following  User   @relation("userFollowing", fields: [followingId], references: [id])
+}

@@ -1,0 +1,33 @@
+{
+    "database": {
+        "1713515807012": {
+            "host": "127.0.0.1",
+            "port": 3306,
+            "user": "root",
+            "dbType": "SQLite",
+            "name": "dev.db",
+            "advance": {
+                "hideSystemSchema": true,
+                "safeUpdateMode": false,
+                "groupingTables": false,
+                "showForeignKey": false
+            },
+            "timezone": "+00:00",
+            "usingSSH": false,
+            "useSocksProxy": false,
+            "useHTTPProxy": false,
+            "global": false,
+            "savePassword": "Forever",
+            "readonly": false,
+            "sort": 12,
+            "useSSL": false,
+            "dbPath": "/workspaces/saat/apps/example/prisma/dev.db",
+            "fs": {
+                "showHidden": true
+            },
+            "key": "1713515807012",
+            "connectionKey": "database.connections"
+        }
+    },
+    "$schema": "https://cdn.cweijan.cn/dbclient/schema_new.json"
+}

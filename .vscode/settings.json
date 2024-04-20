@@ -1,0 +1,47 @@
+{
+  "json.schemas": [
+    {
+      "url": "https://cdn.jsdelivr.net/npm/tsup/schema.json",
+      "fileMatch": ["package.json", "tsup.config.json"]
+    }
+  ],
+  "files.associations": {
+    "*.css": "postcss"
+  },
+  "git.allowForcePush": true,
+  "git.useForcePushWithLease": true,
+  "git.showActionButton": {
+    "commit": true,
+    "publish": true,
+    "sync": false
+  },
+  "git.branchProtection": ["main"],
+  "githubPullRequests.ignoredPullRequestBranches": ["main"],
+  "npm.packageManager": "npm",
+  "gitlens.codeLens.authors.enabled": true,
+  "gitlens.codeLens.recentChange.enabled": true,
+  "gitlens.statusBar.enabled": true,
+  "gitlens.graph.layout": "panel",
+  "gitlens.graph.dimMergeCommits": true,
+  "gitlens.graph.showRemoteNames": true,
+  "gitlens.views.commitDetails.files.layout": "tree",
+  "javascript.suggest.paths": false,
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.importModuleSpecifierEnding": "minimal",
+  "typescript.suggest.paths": false,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifierEnding": "minimal",
+  "eslint.ignoreUntitled": true,
+  "eslint.codeActionsOnSave.mode": "all",
+  "eslint.lintTask.enable": false,
+  "eslint.onIgnoredFiles": "warn",
+  "eslint.validate": ["javascript", "typescript"],
+  "prettier.configPath": ".prettierrc.mjs",
+  "prettier.ignorePath": ".gitignore",
+  "prettier.singleQuote": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  }
+}
