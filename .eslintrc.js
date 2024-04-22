@@ -1,6 +1,9 @@
+const { resolve } = require('node:path');
+
+const project = resolve(__dirname, 'tsconfig.json');
+
 /** @type {import("eslint").Linter.Config} */
-const config = {
-  root: true,
+module.exports = {
   ignorePatterns: ['apps/**', 'packages/**'],
   extends: [
     require.resolve('@vercel/style-guide/eslint/node'),
@@ -17,5 +20,3 @@ const config = {
     },
   },
 };
-
-export default config;

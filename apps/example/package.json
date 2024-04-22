@@ -5,6 +5,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "fix": "eslint . --max-warnings 0 --fix",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "prisma db push",
     "lint": "eslint . --max-warnings 0",
@@ -12,6 +13,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@next/eslint-plugin-next": "^14.2.2",
     "@prisma/client": "5.12.1",
     "@saat/core": "workspace:*",
     "next": "^14.1.1",
@@ -27,5 +29,8 @@
     "eslint": "^8.57.0",
     "prisma": "^5.12.1",
     "typescript": "^5.3.3"
+  },
+  "prisma": {
+    "seed": "saat"
   }
 }

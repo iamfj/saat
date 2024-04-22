@@ -4,26 +4,27 @@
   "description": "",
   "license": "ISC",
   "author": "",
-  "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.cts",
-      "import": "./dist/index.cjs",
-      "require": "./dist/index.cjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
     }
   },
-  "main": "./dist/index.cjs",
-  "types": "./dist/index.d.cts",
-  "typings": "./dist/index.d.cts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
   "bin": {
-    "saat": "./dist/cli.cjs"
+    "saat": "./dist/cli.js"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsup",
+    "fix": "eslint . --max-warnings 0 --fix",
     "preinstall": "npx only-allow pnpm",
+    "lint": "eslint . --max-warnings 0",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "tsup --watch"
   },

@@ -1,69 +1,82 @@
-import { faker } from '@faker-js/faker';
+import { faker, type Faker } from '@faker-js/faker';
 
-// Get all module names from faker that are not functions
-type ExportedModuleKeys = {
-  [K in keyof typeof faker]: (typeof faker)[K] extends Function ? never : K;
-}[keyof typeof faker];
+type FakerModuleKeys = keyof Faker;
 
-// Get all method names from the modules that are functions
-type ExportedMethodNames<Module extends ExportedModuleKeys> = {
-  [Method in keyof (typeof faker)[Module]]: (typeof faker)[Module][Method] extends Function
-    ? Method
-    : never;
-}[keyof (typeof faker)[Module]];
+type FakerModuleMethods<Module extends FakerModuleKeys> = {
+  [Method in keyof Faker[Module]]: Method extends string ? Method : never;
+}[keyof Faker[Module]];
 
-// Utility type to create dot-notation strings (e.g., "module.method")
-type ExportedFakerMethods = {
-  [Module in ExportedModuleKeys]: ExportedMethodNames<Module> extends string
-    ? `${Module}.${ExportedMethodNames<Module>}`
-    : never;
-}[ExportedModuleKeys];
+type FakerMethods = {
+  [Module in FakerModuleKeys]: {
+    [Method in FakerModuleMethods<Module>]: `${Module}.${Method}`;
+  }[FakerModuleMethods<Module>];
+}[FakerModuleKeys];
 
-// Utility type to generate all parameter combinations for ExportedFakerMethods
-type ExportedMethodParameters = {
-  [Method in ExportedFakerMethods]: Method extends `${infer Module}.${infer MethodName}`
-    ? Module extends keyof typeof faker
-      ? MethodName extends keyof (typeof faker)[Module]
-        ? (typeof faker)[Module][MethodName] extends (...args: any) => any
-          ? Parameters<(typeof faker)[Module][MethodName]>
-          : never
+type FakerInfer<T extends FakerMethods> =
+  T extends `${infer Module}.${infer Method}`
+    ? Module extends FakerModuleKeys
+      ? Method extends FakerModuleMethods<Module>
+        ? Faker[Module][Method]
         : never
       : never
     : never;
-};
 
-// Utility type to generate all return types for ExportedFakerMethods
-type ExportedMethodReturnTypes = {
-  [Method in ExportedFakerMethods]: Method extends `${infer Module}.${infer MethodName}`
-    ? Module extends keyof typeof faker
-      ? MethodName extends keyof (typeof faker)[Module]
-        ? (typeof faker)[Module][MethodName] extends (...args: any) => any
-          ? ReturnType<(typeof faker)[Module][MethodName]>
-          : never
-        : never
-      : never
-    : never;
-};
+type FakeGenerator<Method extends FakerMethods> = (
+  method: Method,
+) => (
+  ...args: Parameters<FakerInfer<Method>>
+) => ReturnType<FakerInfer<Method>>;
 
-// Utility type to generate a function signature for each ExportedFakerMethods
-export type FakeGenerator<M extends ExportedFakerMethods> = (
-  ...args: ExportedMethodParameters[M]
-) => ExportedMethodReturnTypes[M];
-
-// Fake function that takes a module name and method name and returns a function
-export function fake<M extends ExportedFakerMethods>(
-  module: M,
-): FakeGenerator<M> {
-  return (
-    ...args: ExportedMethodParameters[M]
-  ): ExportedMethodReturnTypes[M] => {
-    const [moduleName, methodName] = module.split('.');
-    if (!faker[moduleName] || !faker[moduleName][methodName]) {
-      throw new Error(`Invalid module or method: ${module}`);
-    }
-    return faker[moduleName][methodName](...args);
-  };
+function isFakerModuleKey(module: string): module is FakerModuleKeys {
+  return module in faker;
 }
 
-// Export default fake function
-export default { fake };
+function isFakerModuleMethod<Module extends FakerModuleKeys>(
+  module: Module,
+  method: string,
+): method is FakerModuleMethods<Module> {
+  return method in faker[module];
+}
+
+function getFakerMethod<
+  Module extends FakerModuleKeys,
+  Method extends FakerModuleMethods<Module>,
+>(module: Module, method: Method): Faker[Module][Method] {
+  const moduleObj = faker[module];
+  const methodObj = moduleObj[method];
+  if (typeof methodObj === 'function') {
+    return methodObj as Faker[Module][Method];
+  }
+  throw new Error('Method is not callable');
+}
+
+export function fake<Method extends FakerMethods>(
+  method: Method,
+): FakeGenerator<Method> {
+  const methodSplit = method.split('.');
+
+  if (methodSplit.length !== 2) {
+    throw new Error(`Invalid method: ${method}`);
+  }
+
+  const moduleName = methodSplit[0] as FakerModuleKeys | undefined;
+
+  if (!moduleName) {
+    throw new Error(`Invalid method: ${method}`);
+  }
+
+  const methodName = methodSplit[1] as FakerModuleMethods<typeof moduleName>;
+
+  if (
+    !isFakerModuleKey(moduleName) ||
+    !isFakerModuleMethod(moduleName, methodName)
+  ) {
+    throw new Error(`Invalid method: ${method}`);
+  }
+
+  // Ensure type assertions for function call
+  return (...args) => {
+    const fakerMethod = getFakerMethod(moduleName, methodName);
+    return (fakerMethod as FakeGenerator<Method>)(...args);
+  };
+}
