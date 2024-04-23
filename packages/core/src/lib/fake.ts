@@ -12,8 +12,8 @@ type FakerMethods = {
   }[FakerModuleMethods<Module>];
 }[FakerModuleKeys];
 
-type FakerInfer<T extends FakerMethods> =
-  T extends `${infer Module}.${infer Method}`
+type FakerInfer<Ident extends FakerMethods> =
+  Ident extends `${infer Module}.${infer Method}`
     ? Module extends FakerModuleKeys
       ? Method extends FakerModuleMethods<Module>
         ? Faker[Module][Method]
@@ -22,10 +22,24 @@ type FakerInfer<T extends FakerMethods> =
     : never;
 
 type FakeGenerator<Method extends FakerMethods> = (
-  method: Method,
-) => (
-  ...args: Parameters<FakerInfer<Method>>
-) => ReturnType<FakerInfer<Method>>;
+  options?: Parameters<FakerInfer<Method>>[0] extends undefined
+    ? never
+    : Parameters<FakerInfer<Method>>[0],
+) => () => ReturnType<FakerInfer<Method>>;
+
+type FakeOptions<Method extends FakerMethods> = Parameters<
+  FakerInfer<Method>
+>[0] extends undefined
+  ? [method: Method]
+  : [method: Method, options?: Parameters<FakerInfer<Method>>[0]];
+
+type FakeOptionsType<Method extends FakerMethods> = Parameters<
+  FakerInfer<Method>
+>[0];
+type SafeFakeOptionsType<Method extends FakerMethods> =
+  FakeOptionsType<Method> extends undefined
+    ? never
+    : FakeOptionsType<Method> | undefined;
 
 function isFakerModuleKey(module: string): module is FakerModuleKeys {
   return module in faker;
@@ -51,7 +65,7 @@ function getFakerMethod<
 }
 
 export function fake<Method extends FakerMethods>(
-  method: Method,
+  ...[method, options]: FakeOptions<Method>
 ): FakeGenerator<Method> {
   const methodSplit = method.split('.');
 
@@ -75,8 +89,14 @@ export function fake<Method extends FakerMethods>(
   }
 
   // Ensure type assertions for function call
-  return (...args) => {
+  return () => {
     const fakerMethod = getFakerMethod(moduleName, methodName);
-    return (fakerMethod as FakeGenerator<Method>)(...args);
+    const args: SafeFakeOptionsType<Method> =
+      options as SafeFakeOptionsType<Method>;
+
+    if (args !== undefined) {
+      return (fakerMethod as FakeGenerator<Method>)(args);
+    }
+    return (fakerMethod as FakeGenerator<Method>)();
   };
 }
