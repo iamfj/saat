@@ -1,9 +1,21 @@
 import { type Prisma } from '@prisma/client';
+import { fake } from '@/lib/fake';
 
-type ModelName = keyof Prisma.TypeMap['model'];
+type ModelNames = keyof Prisma.TypeMap['model'];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- not implemented yet
-export function saat(model: ModelName, options: any) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- not implemented yet
-  return [model, options];
+type ModelScalars<Model extends ModelNames> = {
+  [Field in keyof Prisma.TypeMap['model'][Model]['payload']['scalars']]:
+    | Prisma.TypeMap['model'][Model]['payload']['scalars'][Field]
+    | (() => () => Prisma.TypeMap['model'][Model]['payload']['scalars'][Field]);
+};
+
+export function saat<M extends ModelNames>(
+  model: M,
+  fields: Partial<ModelScalars<M>>,
+): M | undefined {
+  if (fields.id) return undefined;
+  return model;
 }
+
+// ToDo: Remove before merge
+saat('User', { email: fake('internet.email') });
