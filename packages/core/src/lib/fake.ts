@@ -12,8 +12,16 @@ type FakerMethods = {
   }[FakerModuleMethods<Module>];
 }[FakerModuleKeys];
 
-type FakerInfer<Ident extends FakerMethods> =
-  Ident extends `${infer Module}.${infer Method}`
+type FakerMethodsInfer<R = never> = {
+  [Method in FakerMethods]: ReturnType<FakerInfer<Method>> extends R
+    ? Method
+    : [R] extends [never]
+      ? Method
+      : never;
+}[FakerMethods];
+
+type FakerInfer<FakerMethod extends FakerMethods> =
+  FakerMethod extends `${infer Module}.${infer Method}`
     ? Module extends FakerModuleKeys
       ? Method extends FakerModuleMethods<Module>
         ? Faker[Module][Method]
@@ -21,7 +29,7 @@ type FakerInfer<Ident extends FakerMethods> =
       : never
     : never;
 
-type FakeGenerator<Method extends FakerMethods> = (
+type FakeGenerator<Method extends FakerMethodsInfer<R>, R = never> = (
   options?: Parameters<FakerInfer<Method>>[0] extends undefined
     ? never
     : Parameters<FakerInfer<Method>>[0],
