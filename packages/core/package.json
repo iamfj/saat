@@ -36,10 +36,12 @@
   "devDependencies": {
     "@prisma/client": "^5.12.1",
     "@vercel/style-guide": "^6.0.0",
+    "@vitest/coverage-v8": "^1.5.2",
     "eslint": "^8.57.0",
     "prisma": "^5.12.1",
     "tsup": "^8.0.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.2"
   },
   "peerDependencies": {
     "@prisma/client": ">=4 || >=5"
