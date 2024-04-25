@@ -4,6 +4,7 @@
   "description": "",
   "license": "ISC",
   "author": "",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -25,7 +26,8 @@
     "fix": "eslint . --max-warnings 0 --fix",
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint . --max-warnings 0",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
     "watch": "tsup --watch"
   },
   "dependencies": {
