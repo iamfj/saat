@@ -7,10 +7,11 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "types": ["vitest/importMeta"],
     "lib": ["es2023"],
     "target": "es2022",
     "moduleResolution": "node"
   },
-  "include": ["**/*.ts", "*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["**/*.ts", "*.ts", "vite.config.mts"],
+  "exclude": ["node_modules", "dist", "vitest/**/*"]
 }
