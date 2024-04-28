@@ -23,12 +23,12 @@
   ],
   "scripts": {
     "build": "tsup",
+    "build:watch": "tsup --watch",
     "fix": "eslint . --max-warnings 0 --fix",
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint . --max-warnings 0",
     "test": "vitest",
-    "test:coverage": "vitest --coverage",
-    "watch": "tsup --watch"
+    "test:coverage": "vitest --coverage"
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
