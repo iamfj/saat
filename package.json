@@ -7,11 +7,14 @@
   ],
   "scripts": {
     "build": "turbo build",
+    "build:watch": "turbo build:watch",
     "dev": "turbo dev",
     "fix": "turbo fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "preinstall": "npx only-allow pnpm",
-    "lint": "turbo lint"
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "test:coverage": "turbo test:coverage"
   },
   "devDependencies": {
     "@vercel/style-guide": "^6.0.0",
