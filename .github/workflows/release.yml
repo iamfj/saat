@@ -58,7 +58,7 @@ jobs:
       # npm OIDC trusted publishing (no NPM_TOKEN — the package disallows tokens);
       # id-token: write mints the OIDC token and provenance is automatic.
       - name: Publish to npm
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
           publish: bunx changeset publish
         env:
